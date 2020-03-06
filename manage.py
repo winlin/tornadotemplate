@@ -17,6 +17,9 @@ SD_CONF_FILE = 'main.cfg'
 KILL_SIGNAL = '-15'
 FORCE_KILL_SIGNAL = '-9'
 
+#PYTHON3 = '/usr/bin/python3'
+PYTHON3 = 'python3'
+
 def usage():
     if len(sys.argv) != 2:
         print('*' * 80)
@@ -40,8 +43,9 @@ def get_interface_ip(ifname):
                             ifname[:15]))[20:24])
 
 def run(sandbox_conf):
-    run_cmd = "cd %s && /usr/local/bin/python3.7 main.py --port=%d --address=%s --debug=True --logging=debug --log_path=%s --conf_file=%s" % (
+    run_cmd = "cd %s && %s main.py --port=%d --address=%s --debug=True --logging=debug --log_path=%s --conf_file=%s" % (
         sandbox_conf['pwd'],
+        PYTHON3,
         sandbox_conf['port'][0],
         '127.0.0.1', #get_interface_ip('eth0'),
         sandbox_conf['log_path'],
@@ -51,8 +55,9 @@ def run(sandbox_conf):
 
 def start(sandbox_conf):
     for port in sandbox_conf['port']:
-        start_cmd = "cd %s && nohup /usr/local/bin/python3.7 main.py --port=%d --address=%s --logging=%s --log_path=%s --debug=%s --conf_file=%s > /dev/null 2>&1 &" % (
+        start_cmd = "cd %s && nohup %s main.py --port=%d --address=%s --logging=%s --log_path=%s --debug=%s --conf_file=%s > /dev/null 2>&1 &" % (
             sandbox_conf['pwd'],
+            PYTHON3,
             port,
             sandbox_conf['address'],
             sandbox_conf['logging'],
